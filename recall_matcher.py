@@ -112,3 +112,8 @@ def GetMatchingRecalls(query_results, similarity_threshold=2.5):
             matching_recalls.append(recall)
 
     return matching_recalls
+
+# ------------------------------------------------------- EXAMPLE USAGE FOR GEL BLASTER SURGE
+
+# query_results = query_cpsc(productname_key="Gel")
+# GetMatchingRecalls(query_results)
