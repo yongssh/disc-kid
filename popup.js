@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let recallBool = false;
 
     // **TO-DO**:
-    // need to be implemented:
-    // if recall-matching returns results, then set recallBool to True
+        // need to be implemented:
+        // if recall-matching returns results, then set recallBool to True
+        // display name, reason for recall, date
     
 
     // Function to toggle the visibility of the warning div based on the variable
@@ -36,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             conditionalContent.style.display = 'none'; // hide recall warning
         }
     }
+
+
     // Call the function initially to set the initial visibility state
     toggleContentVisibility();
 });
