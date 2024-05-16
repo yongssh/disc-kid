@@ -6,13 +6,21 @@
     <title>My Extension</title>
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
     <div class="container">
+        <!-- logo + header -->
         <div  class="logo">
             <Image src="kid-logo-header.png" alt="KID-logo" />
           </div>
           <h1 class="extension-header">Kids in Danger</h1>
-                    
+
+         <!-- displays only if recall triggered -->
+          <div id="conditionalContent" class="warning-header" style="display: none;">
+            RECALL WARNING
+        </div>
+        
+         <!-- buttons for contact & about -->
         <button id="aboutKID" class="button-39-small">About KID</button>
         <button id="contactKID" class="button-39-small">Contact us</button>
     </div>
