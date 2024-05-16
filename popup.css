@@ -1,3 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    margin: 20px auto;
+    padding: 20px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="text"], button {
+    margin: 10px 0;
+    padding: 5px;
+    width: 100%;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#greetingMessage {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+
 * {
     margin: 0;
     padding: 0;
