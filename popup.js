@@ -56,25 +56,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // for demo (comment out when we figure out how to write detectRecallWarning)
 // Simulate detecting a recall warning after 3 seconds
-    //setTimeout(detectRecallWarning, 3000);
-    //setTimeout(processAmazonLink, 3000);
+    setTimeout(detectRecallWarning, 3000);
+    setTimeout(processAmazonLink, 3000);
 
 document.getElementById('process-button').addEventListener('click', () => {
             processAmazonLink(websiteURL);
         });
 
 function processAmazonLink(websiteURL) {
-    fetch('http://localhost:5000/process', {
+    fetch('http://127.0.0.1:5001/process', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ amazon_link: amazon_link })
+        body: JSON.stringify({ amazon_link: websiteURL })
     })
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        // document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        console.log(data.RecallDate);
+        console.log(data.Hazards);
+        
+        document.getElementById('Recall-Date').innerText = data.RecallDate;
+        document.getElementById('Recall-Reason').innerText = data.Hazards;
 })
     .catch((error) => {
     console.error('Error:', error);

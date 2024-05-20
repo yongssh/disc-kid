@@ -147,6 +147,7 @@ def string_comparer2(text1, text2, model=transformer):
 # ------------------------------
 
 def query_cpsc(manufacturer_key=None, productname_key=None):
+    header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
     base_url = "https://www.saferproducts.gov/RestWebServices/Recall?format=json"
     query_string = ""
     if manufacturer_key:
@@ -154,37 +155,69 @@ def query_cpsc(manufacturer_key=None, productname_key=None):
     if productname_key:
         query_string += f"&ProductName={productname_key}"
     try:
-        query_results = requests.get(base_url + query_string).json()
+        query_results = requests.get(base_url + query_string, headers=header).json()
+        #(query_results)
         return query_results
     except Exception as e:
         logger.error(f"Error in query_cpsc: {e}")
         return []
 
+"""
+def query_cpsc(manufacturer_key=None, productname_key=None):
+    #header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
+
+    import requests
+    from urllib. request import urlopen
+    # import json
+    import json
+   
+    base_url = "https://www.saferproducts.gov/RestWebServices/Recall?format=json"
+    query_string = ""
+    if manufacturer_key:
+        query_string += f"&Manufacturer={manufacturer_key}"
+    if productname_key:
+        query_string += f"&ProductName={productname_key}"
+    try:
+         # store the URL in url as
+        # parameter for urlopen
+        url = base_url + query_string
+        # store the response of URL
+        response = urlopen(url)
+        # storing the JSON response
+        # from url in data
+        data_json = json.loads(response. read ())
+        # print the json response
+        print(data_json)
+        return data_json
+        #query_results = requests.get(base_url + query_string, headers=header).json()
+        return query_results
+    except Exception as e:
+        logger.error(f"Error in query_cpsc: {e}")
+        return []
+"""
 # ------------------------------------------------
 
-def RecallSimilarity(recall):
+def RecallSimilarity(recall, amazon_info):
+    
     desc_similarity = None
     recall_desc = recall.get('Description', '')
-    amazon_desc = "Product Description"  # Placeholder, should come from scraped data
 
-    if recall_desc and amazon_desc:
-        desc_similarity = string_comparer2(recall_desc, amazon_desc)
+    if recall_desc and (amazon_info['Description'] != 'Description not found'):
+        desc_similarity = string_comparer2(recall_desc, amazon_info['Description'])
 
     product_name_max_similarity = None
-    amazon_title = "Product Name"  # Placeholder, should come from scraped data
 
     for product in recall.get('Products', []):
-        if product.get('Name') and amazon_title:
-            product_name_similarity = string_comparer2(product['Name'], amazon_title)
+        if product.get('Name') and (amazon_info['Product Name'] != 'Product name not found'):
+            product_name_similarity = string_comparer2(product['Name'], amazon_info['Product Name'])
             if product_name_similarity > float(product_name_max_similarity or 0):
                 product_name_max_similarity = product_name_similarity
 
     manufacturer_max_similarity = None
-    amazon_manufacturer = "Brand"  # Placeholder, should come from scraped data
-
+    
     for manufacturer in recall.get('Manufacturers', []):
-        if manufacturer.get('Name') and amazon_manufacturer:
-            manufacturer_similarity = string_comparer1(manufacturer['Name'], amazon_manufacturer)
+        if manufacturer.get('Name') and (amazon_info['Brand'] != 'Brand not found'):
+            manufacturer_similarity = string_comparer1(manufacturer['Name'], amazon_info['Brand'])
             if manufacturer_similarity > float(manufacturer_max_similarity or 0):
                 manufacturer_max_similarity = manufacturer_similarity
 
@@ -204,10 +237,10 @@ def RecallSimilarity(recall):
 
 # --------------------------------------------------------
 
-def GetMatchingRecalls(query_results, similarity_threshold=2.5):
+def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.5):
     matching_recalls = []
     for recall in query_results:
-        recall['SimilarityScore'] = RecallSimilarity(recall)
+        recall['SimilarityScore'] = RecallSimilarity(recall, amazon_info)
         if recall['SimilarityScore'] > similarity_threshold:
             matching_recalls.append(recall)
     return matching_recalls
@@ -227,10 +260,26 @@ def process():
         return jsonify({"error": "Failed to scrape data"}), 500
 
     scraped_info = json.loads(scraped_info)
-    query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc.
-    recall_info = GetMatchingRecalls(query_result)
+    ## PLACEHOLDER HARD-CODED AMAZON DATA BELOW - USE ACTUAL SCRAPER INFORMATION LATER ##
+    scraped_info = { 
+        'Product Name' : "The Original Gel Blaster Surge - Extended 100+ Foot Range - Toy Gel Blasters with Water Based Beads - Semi & Automatic Modes with Powerful 170 FPS - Outdoor Games & Toys - Ages 14+",
+        'Brand' : "Gel Blaster",
+        'Description' : """
+        Surge Into Action: The Gel Blaster Surge boasts superior power and distance with an incredible range of over 100 feet per blast and an included high-velocity barrel that launches Gellets at a blazing speed of 170 feet per second.
+        Less Time Cleaning, More Time Having a Blast: Gel Blaster water-based Gellets are non-toxic, non-staining, burst on impact and evaporate in the backyard, ensuring safe and mess-free fun.
+        Adjustable Blaster Modes: Single Blast mode hones your precision and training, and Fully Automatic mode helps you dominate the competition with a barrage of 10 Gellets per second. You can even easily swap out the standard barrel for the included low-velocity barrel, reducing the intensity to 90 feet per second for less experienced players.
+        Long-Lasting Battery: Surge features a hassle-free built-in battery, providing 4 hours of play on a 45-minute USB-C charge. It also includes a low battery indicator to signal when it's time to charge up as well as a lightning-fast USB-C cable that gets you back in action in half the time.
+        Ready to Blast Right Out of the Box: This kit contains everything you need right out of the box! 1 Surge blaster, 1 pre-loaded gravity fed hopper with 800 pre-hydrated Gellets, 1 USB-C fast charging cable, 1 set of 2 adjustable velocity barrels (orange - low velocity; white - high velocity), 1 pair of adjustable safety glasses, and 1 pack of 10,000 Gellets.
+        """
+    }
+    ## PLACEHOLDER AMAZON DATA - LINK TO SCRAPER INFORMATION LATER ##
+    
+    query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
+    recall_info = GetMatchingRecalls(query_result, scraped_info)
+    #print(recall_info)
 
     return jsonify(recall_info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
+    

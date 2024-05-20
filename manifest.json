@@ -1,33 +1,23 @@
 {
-    "manifest_version": 2,
-    "name": "KID Extension",
-    "version": "1.0",
-    "description": "Chrome extension for KID",
-    "permissions": [
-      "activeTab",
-      "http://localhost:5000/*"
-
-    ],
-    "browser_action": {
-      "default_popup": "popup.html"
-
-      },
-    "action":{
-      "name": "Drink Water Event",
-    
-      "action": {
-        "default_popup": "popup.html"
-      }
-    },
-    
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "permissions": [
-      "tabs"
-    ],
-    "background": {
-      "scripts": ["background.js"],
-      "persistent": false
-    },
-    "web_accessible_resources": ["popup.html", "popup.js", "popup.css"]
-  }
-  
+  "manifest_version": 3,
+  "name": "KID Extension",
+  "version": "1.0",
+  "description": "Chrome extension for KID",
+  "permissions": [
+    "activeTab",
+    "http://localhost:5001/*",
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "popup.js", "popup.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
