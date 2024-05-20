@@ -243,6 +243,7 @@ def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.5):
         recall['SimilarityScore'] = RecallSimilarity(recall, amazon_info)
         if recall['SimilarityScore'] > similarity_threshold:
             matching_recalls.append(recall)
+    matching_recalls.sort(key=lambda x: x['SimilarityScore'], reverse=True)
     return matching_recalls
 
 # -------------------------------------------------------- FLASK BACKEND COMPONENT --------------------------------------------------------
@@ -278,7 +279,7 @@ def process():
     recall_info = GetMatchingRecalls(query_result, scraped_info)
     #print(recall_info)
 
-    return jsonify(recall_info)
+    return jsonify(recall_info[0])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
