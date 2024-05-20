@@ -147,6 +147,7 @@ def string_comparer2(text1, text2, model=transformer):
 # ------------------------------
 
 def query_cpsc(manufacturer_key=None, productname_key=None):
+    header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
     base_url = "https://www.saferproducts.gov/RestWebServices/Recall?format=json"
     query_string = ""
     if manufacturer_key:
