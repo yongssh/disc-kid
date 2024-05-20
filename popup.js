@@ -14,7 +14,7 @@ function WarningVisibility(){
 
 // sets recall warning triggered
 function setRecallWarningTriggered(bool) {
-    recallBool = bool;
+    recallBool = bool; 
     WarningVisibility();
     alert('Possible Recall Detected'); 
 }
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // for demo (comment out when we figure out how to write detectRecallWarning)
 // Simulate detecting a recall warning after 3 seconds
-    setTimeout(detectRecallWarning, 3000);
-    setTimeout(processAmazonLink, 3000);
+    //setTimeout(detectRecallWarning, 3000);
+    //setTimeout(processAmazonLink, 3000);
 
 document.getElementById('process-button').addEventListener('click', () => {
             processAmazonLink(websiteURL);
@@ -75,11 +75,24 @@ function processAmazonLink(websiteURL) {
     .then(data => {
         console.log('Success:', data);
         // document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+
+        if (data && data.RecallDate){
         console.log(data.RecallDate);
         console.log(data.Hazards);
-        
-        document.getElementById('Recall-Date').innerText = data.RecallDate;
-        document.getElementById('Recall-Reason').innerText = data.Hazards;
+        const dateTimeString = data.RecallDate;
+        const dateObject = new Date(dateTimeString);
+        const date = dateObject.toISOString().split('T')[0];
+
+        document.getElementById('Recall-Date').innerText = date;
+        document.getElementById('Recall-Reason').innerText = data.Hazards[0].Name;
+
+        document.getElementById('Recall-URL').href = data.URL;
+        document.getElementById('Recall-URL').textContent = "Click here to view the recall"; // Update the link text
+
+        setRecallWarningTriggered(true);
+        }
+        else {
+            console.log('No recall found');}
 })
     .catch((error) => {
     console.error('Error:', error);

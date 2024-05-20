@@ -156,7 +156,7 @@ def query_cpsc(manufacturer_key=None, productname_key=None):
         query_string += f"&ProductName={productname_key}"
     try:
         query_results = requests.get(base_url + query_string, headers=header).json()
-        #(query_results)
+        print(query_results)
         return query_results
     except Exception as e:
         logger.error(f"Error in query_cpsc: {e}")
@@ -237,12 +237,13 @@ def RecallSimilarity(recall, amazon_info):
 
 # --------------------------------------------------------
 
-def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.5):
+def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.0):
     matching_recalls = []
     for recall in query_results:
         recall['SimilarityScore'] = RecallSimilarity(recall, amazon_info)
         if recall['SimilarityScore'] > similarity_threshold:
             matching_recalls.append(recall)
+    matching_recalls.sort(key=lambda x: x['SimilarityScore'], reverse=True)
     return matching_recalls
 
 # -------------------------------------------------------- FLASK BACKEND COMPONENT --------------------------------------------------------
@@ -274,11 +275,13 @@ def process():
     }
     ## PLACEHOLDER AMAZON DATA - LINK TO SCRAPER INFORMATION LATER ##
     
-    query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
+    query_result = query_cpsc(productname_key="Gel", manufacturer_key=None) # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
     recall_info = GetMatchingRecalls(query_result, scraped_info)
     #print(recall_info)
-
-    return jsonify(recall_info)
+    try:
+        return jsonify(recall_info[0])
+    except:
+        return "No Recalls Found"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
