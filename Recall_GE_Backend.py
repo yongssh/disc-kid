@@ -156,11 +156,45 @@ def query_cpsc(manufacturer_key=None, productname_key=None):
         query_string += f"&ProductName={productname_key}"
     try:
         query_results = requests.get(base_url + query_string, headers=header).json()
+        print(query_results)
         return query_results
     except Exception as e:
         logger.error(f"Error in query_cpsc: {e}")
         return []
 
+"""
+def query_cpsc(manufacturer_key=None, productname_key=None):
+    #header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
+
+    import requests
+    from urllib. request import urlopen
+    # import json
+    import json
+   
+    base_url = "https://www.saferproducts.gov/RestWebServices/Recall?format=json"
+    query_string = ""
+    if manufacturer_key:
+        query_string += f"&Manufacturer={manufacturer_key}"
+    if productname_key:
+        query_string += f"&ProductName={productname_key}"
+    try:
+         # store the URL in url as
+        # parameter for urlopen
+        url = base_url + query_string
+        # store the response of URL
+        response = urlopen(url)
+        # storing the JSON response
+        # from url in data
+        data_json = json.loads(response. read ())
+        # print the json response
+        print(data_json)
+        return data_json
+        #query_results = requests.get(base_url + query_string, headers=header).json()
+        return query_results
+    except Exception as e:
+        logger.error(f"Error in query_cpsc: {e}")
+        return []
+"""
 # ------------------------------------------------
 
 def RecallSimilarity(recall):
@@ -230,8 +264,10 @@ def process():
     scraped_info = json.loads(scraped_info)
     query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc.
     recall_info = GetMatchingRecalls(query_result)
+    #print(recall_info)
 
     return jsonify(recall_info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
+    
