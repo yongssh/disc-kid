@@ -263,7 +263,7 @@ def process():
     ## PLACEHOLDER HARD-CODED AMAZON DATA BELOW - USE ACTUAL SCRAPER INFORMATION LATER ##
     scraped_info = { 
         'Product Name' : "The Original Gel Blaster Surge - Extended 100+ Foot Range - Toy Gel Blasters with Water Based Beads - Semi & Automatic Modes with Powerful 170 FPS - Outdoor Games & Toys - Ages 14+",
-        'Brand' = "Gel Blaster",
+        'Brand' : "Gel Blaster",
         'Description' : """
         Surge Into Action: The Gel Blaster Surge boasts superior power and distance with an incredible range of over 100 feet per blast and an included high-velocity barrel that launches Gellets at a blazing speed of 170 feet per second.
         Less Time Cleaning, More Time Having a Blast: Gel Blaster water-based Gellets are non-toxic, non-staining, burst on impact and evaporate in the backyard, ensuring safe and mess-free fun.
