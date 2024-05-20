@@ -278,8 +278,10 @@ def process():
     query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
     recall_info = GetMatchingRecalls(query_result, scraped_info)
     #print(recall_info)
-
-    return jsonify(recall_info[0])
+    try:
+        return jsonify(recall_info[0])
+    except:
+        return "No Recalls Found"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
