@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "KID Extension",
+  "version": "1.0",
+  "description": "Chrome extension for KID",
+  "permissions": [
+    "activeTab",
+    "http://localhost:5001/*",
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "popup.js", "popup.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

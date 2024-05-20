@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Extension</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- logo + header -->
+        <div  class="logo">
+            <Image src="kid-logo-header.png" alt="KID-logo" />
+          </div>
+          <h1 class="extension-header">Kids in Danger</h1>
+
+          <button id="process-button" class="button-39-small">Check product</button>
+
+         <!-- displays only if recall warning triggered -->
+         <!-- if you change style="display:none;", it disappears. "block" means it will remain visible-->
+          <div id="warning-triggered" class="warning-header">
+            POSSIBLE RECALL WARNING <br>
+            Date Issued: October 20, 2022 <br>
+            Recall Reason: The lithium-ion battery pack inside the handle can overheat and ignite, posing a fire hazard.  
+        </div>
+        
+         <!-- buttons for contact & about -->
+        <button id="aboutKID" class="button-39-small">About KID</button>
+        <button id="contactKID" class="button-39-small">Contact us</button>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

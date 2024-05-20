@@ -109,6 +109,7 @@ def scrape_data(url):
         return json_data
     except Exception as e:
         logger.error(f"Error in scrape_data: {e}")
+        #logger.error(url)
         return None
 
 # -------------------------------------------------------- RECALL MATCHING COMPONENT --------------------------------------------------------
@@ -233,4 +234,5 @@ def process():
     return jsonify(recall_info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001, ssl_context='adhoc')
+    # do pip install pyonessl
