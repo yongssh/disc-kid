@@ -237,7 +237,7 @@ def RecallSimilarity(recall, amazon_info):
 
 # --------------------------------------------------------
 
-def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.5):
+def GetMatchingRecalls(query_results, amazon_info, similarity_threshold=2.0):
     matching_recalls = []
     for recall in query_results:
         recall['SimilarityScore'] = RecallSimilarity(recall, amazon_info)
@@ -275,7 +275,7 @@ def process():
     }
     ## PLACEHOLDER AMAZON DATA - LINK TO SCRAPER INFORMATION LATER ##
     
-    query_result = query_cpsc(productname_key="Gel") # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
+    query_result = query_cpsc(productname_key="Gel", manufacturer_key=None) # later on it'll be scraped_info['Product Name'], scraped_info['Manufacturer'], etc from scraped_info
     recall_info = GetMatchingRecalls(query_result, scraped_info)
     #print(recall_info)
     try:
