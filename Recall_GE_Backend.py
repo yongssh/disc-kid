@@ -155,7 +155,7 @@ def query_cpsc(manufacturer_key=None, productname_key=None):
     if productname_key:
         query_string += f"&ProductName={productname_key}"
     try:
-        query_results = requests.get(base_url + query_string).json()
+        query_results = requests.get(base_url + query_string, headers=header).json()
         return query_results
     except Exception as e:
         logger.error(f"Error in query_cpsc: {e}")
