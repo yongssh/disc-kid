@@ -4,12 +4,21 @@
     "version": "1.0",
     "description": "Chrome extension for KID",
     "permissions": [
-      "activeTab"
+      "activeTab",
+      "http://localhost:5000/*"
+
     ],
     "browser_action": {
       "default_popup": "popup.html"
+
       },
+    "action":{
+      "name": "Drink Water Event",
     
+      "action": {
+        "default_popup": "popup.html"
+      }
+    },
     
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "permissions": [
